@@ -1,0 +1,30 @@
+.navbar{
+    height: 12vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.navbar-left-logo h1{
+    color:#DE3163 ;
+}
+.navbar-right-btn{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+
+
+}
+.navbar-right-btn a{
+    padding: 10px 20px;
+    color: white;
+    background-color: #706e6e;
+    border: 0;
+    border-radius: 20px;
+    /* width: 100%; */
+    text-decoration: none;
+    font-weight:400;
+    font-size: 15px;
+    margin-top: 20px;
+    cursor: pointer;
+}

@@ -1,0 +1,9 @@
+.add-post{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.add-post-form{
+    width: 50%;
+
+}

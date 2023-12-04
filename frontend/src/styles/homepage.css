@@ -1,0 +1,17 @@
+.login-page{
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    /* background-color: black; */
+}
+.login-page-ctx{
+    background-color: black;
+    padding: 60px;
+    border-radius: 10px;
+    /* width: 100%; */
+}
+.login-page-ctx-ctx{
+    width: 100%;
+}
