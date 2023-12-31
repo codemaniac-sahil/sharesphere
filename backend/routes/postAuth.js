@@ -9,6 +9,7 @@ const likePost = require("../controller/post/addLike.js");
 const deleteComment = require("../controller/post/deleteComment.js");
 const unlikePost = require("../controller/post/unlikePost.js");
 const getComments = require("../controller/post/getComments.js");
+const deletePost = require("../controller/post/deletePost.js");
 const router = express.Router();
 
 router.post("/addpost", upload.single("postimage"), addPost);
@@ -24,4 +25,5 @@ router.put("/:id/:commentId/deletecomment", deleteComment);
 router.put("/:id/unlike", unlikePost);
 
 router.get("/:id/getcomments", getComments);
+router.delete("/:id/deletepost", deletePost);
 module.exports = router;

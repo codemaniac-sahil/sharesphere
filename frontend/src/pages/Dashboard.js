@@ -3,6 +3,7 @@ import NavbarAll from "../components/NavbarAll";
 import "../styles/dashboard.css";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import FollowList from "../components/FollowList";
+import { NavLink } from "react-router-dom";
 
 function Dashboard() {
   const [userinfo, setUserInfo] = useState([]);
@@ -24,6 +25,7 @@ function Dashboard() {
         setUserInfo(data);
       });
   }, []);
+  console.log(userinfo);
   return (
     <>
       <NavbarAll />
@@ -112,7 +114,9 @@ function Dashboard() {
                     ))}
                   </div>
                   <div className="userinfo-post-user-username">
-                    <p>{user.createdBy.username}</p>
+                    <NavLink to={`/user/${user.createdBy._id}`}>
+                      <p>{user.createdBy.username}</p>
+                    </NavLink>
                   </div>
                 </div>
                 <div className="userinfo-post-post">

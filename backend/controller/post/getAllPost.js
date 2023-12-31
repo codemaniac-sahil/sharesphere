@@ -82,14 +82,17 @@ const getAllpost = async (req, res) => {
     const followedPosts = user.followings
       .map((followedUser) => followedUser.user.post)
       .flat();
-
+    const userpost = user.post;
+    // console.log(userpost);
+    followedPosts.push(...user.post);
+    // console.log(followedPosts);
     // Fetch the actual posts from the Post model
     const posts = await Post.find({ _id: { $in: followedPosts } })
 
       .populate({
         path: "createdBy",
         select: {
-          _id: 0,
+          // _id: 0,
           post: 0,
           email: 0,
           password: 0,

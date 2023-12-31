@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Logout from "./pages/Logout";
 import PersonalDetails from "./pages/PersonalDetails";
 import AddPost from "./pages/AddPost";
+import User from "./components/User";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/logout" element={<Logout />} />
           <Route path="/personal" element={<PersonalDetails />} />
           <Route path="/addpost" element={<AddPost />} />
+          <Route path="/user/:id" element={<User />} />
         </Routes>
       </BrowserRouter>
     </>
