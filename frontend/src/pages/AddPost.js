@@ -34,16 +34,34 @@ function AddPost() {
         <div className="add-post-form">
           <div className="add-post-form-input">
             <p>Post</p>
-            <input
+            {/* <input
               type="file"
               placeholder="Enter your file"
               name="postimage"
               // value={file}
               onChange={(e) => setFile(e.target.files[0])}
-            />
+            /> */}
+
+            <label for="images" class="drop-container" id="dropcontainer">
+              <span class="drop-title">Drop files here</span>
+              or
+              <input
+                type="file"
+                id="images"
+                accept="image/*"
+                required
+                name="postimage"
+                // value={file}
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+            </label>
+            {/* <FilePicker
+              onChange={(e) => setFile(e.target.files[0])}
+              placeholder="Enter your file"
+            /> */}
           </div>
           <div className="add-post-form-input">
-            <p>Contentt</p>
+            <p>Content</p>
             <textarea
               placeholder="Enter content"
               value={content}

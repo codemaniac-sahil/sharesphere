@@ -1,5 +1,5 @@
 const User = require("../../database/model/user");
-const jwt = require("jsonwebtoken");
+
 require("dotenv").config();
 
 const getSingleUser = async (req, res) => {
@@ -13,8 +13,11 @@ const getSingleUser = async (req, res) => {
   const userId = req.params.id;
   console.log(userId);
   try {
-    const user = User.findById(userId);
-    console.log(user);
+    const user = await User.findById(userId)
+      .populate("post")
+      .populate("followings.user")
+      .populate("followers.user");
+    // console.log(user);
     res.status(201).json(user);
   } catch (error) {
     res.status(401).json({ error });

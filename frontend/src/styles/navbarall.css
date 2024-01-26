@@ -28,3 +28,6 @@
     margin-top: 20px;
     cursor: pointer;
 }
+.navbar-left-logo a{
+    text-decoration: none;
+}

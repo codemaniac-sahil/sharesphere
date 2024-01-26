@@ -49,13 +49,27 @@ function PersonalDetails() {
               </div>
               <div className="login-page-form-input">
                 <p>Profile Picture</p>
-                <input
+                {/* <input
                   type="file"
                   placeholder="Enter your file"
                   name="img"
                   // value={file}
                   onChange={(e) => setFile(e.target.files[0])}
-                />
+                /> */}
+
+                <label for="images" class="drop-container" id="dropcontainer">
+                  <span class="drop-title">Drop files here</span>
+                  or
+                  <input
+                    type="file"
+                    id="images"
+                    accept="image/*"
+                    required
+                    name="postimage"
+                    // value={file}
+                    onChange={(e) => setFile(e.target.files[0])}
+                  />
+                </label>
               </div>
 
               <div className="login-form-button">

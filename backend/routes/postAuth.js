@@ -19,7 +19,7 @@ router.get("/getsinglepost/:id", getSinglePost);
 router.post("/:id/addcomment", addComment);
 
 router.post("/addreply/:id/:commentid", addReply);
-router.put("/:id/addlike", likePost);
+router.post("/:id/addlike", likePost);
 
 router.put("/:id/:commentId/deletecomment", deleteComment);
 router.put("/:id/unlike", unlikePost);

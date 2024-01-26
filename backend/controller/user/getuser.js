@@ -5,7 +5,7 @@ require("dotenv").config();
 const getallUser = async (req, res) => {
   const token = req.cookies.token;
   if (!token) {
-    res.status(401).json({ message: "Unautherized" });
+    res.status(401).json({ message: "Unauthorized" });
   }
   const verifiedUser = jwt.verify(token, process.env.TOKEN_KEY);
 

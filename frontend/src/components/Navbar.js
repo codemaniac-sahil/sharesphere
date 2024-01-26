@@ -1,9 +1,12 @@
 import React from "react";
 import "../styles/navbar.css";
+import { NavLink } from "react-router-dom";
 function Navbar() {
   return (
     <div className="logo">
-      <h1>ShareSphere</h1>
+      <NavLink to="/">
+        <h1>ShareSphere</h1>
+      </NavLink>
     </div>
   );
 }

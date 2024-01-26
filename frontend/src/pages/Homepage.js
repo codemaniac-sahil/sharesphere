@@ -7,18 +7,24 @@ import axios from "axios";
 function Homepage() {
   const [Email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const handleOnSubmit = async () => {
-    await axios.post(
-      `http://localhost:8000/login`,
-      {
-        email: Email,
-        password: password,
-      },
-      { withCredentials: true }
-    );
-    localStorage.setItem("isAuthenticated", JSON.stringify(true));
-    navigate("/dashboard");
+    try {
+      await axios.post(
+        `http://localhost:8000/login`,
+        {
+          email: Email,
+          password: password,
+        },
+        { withCredentials: true }
+      );
+
+      navigate("/dashboard");
+      localStorage.setItem("isAuthenticated", JSON.stringify(true));
+    } catch (err) {
+      setError("Invalid user credentials");
+    }
   };
   return (
     <>
@@ -27,6 +33,7 @@ function Homepage() {
         <div className="login-page-ctx">
           <div className="login-page-ctx-ctx">
             <div className="login-page-heading">
+              {error}
               <h2>Login to our platform</h2>
               <p>
                 Don't have an account <NavLink to="/signup">Signup</NavLink>

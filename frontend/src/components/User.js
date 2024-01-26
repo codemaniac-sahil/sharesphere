@@ -6,20 +6,19 @@ function User() {
   const [userinfo, setUserinfo] = useState([]);
   const { id } = useParams();
   useEffect(() => {
-    console.log(id);
+    // console.log(id);
     fetch(`http://localhost:8000/user/getuser/${id}`, {
       method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
         setUserinfo(data);
       });
-  }, []);
+  }, [id]);
   console.log(userinfo);
   return (
     <>

@@ -1,6 +1,10 @@
 .logo{
     height: 15vh;
-    color:#DE3163 ;
     display: flex;
     justify-content: center;
+}
+.logo a{
+    text-decoration: none;
+    color:#DE3163 ;
+    
 }
