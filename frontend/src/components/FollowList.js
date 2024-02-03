@@ -1,9 +1,56 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function FollowList() {
-  const [user1, setUser1] = useState([]);
-  const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState("");
+  const [updatedUserInfo, setUpdatedUserInfo] = useState([]);
+
+  const addUnFollow = async (userid) => {
+    console.log(userid);
+    const user = {
+      usertounfollow: userid,
+    };
+    console.log(JSON.stringify(user));
+    await fetch("http://localhost:8000/user/addunfollow", {
+      method: "PUT",
+      body: JSON.stringify(user),
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const response = await fetch(`http://localhost:8000/user/getalluser`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const updatedData = await response.json();
+    setUpdatedUserInfo(updatedData);
+  };
+  const getcurrentuser = async () => {
+    const res = await fetch("http://localhost:8000/getcurrentuser", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const result = await res.json();
+    setCurrentUser(result);
+
+    const response = await fetch(`http://localhost:8000/user/getalluser`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const updatedData = await response.json();
+    setUpdatedUserInfo(updatedData);
+  };
   useEffect(() => {
     fetch("http://localhost:8000/user/getalluser", {
       method: "GET",
@@ -15,8 +62,10 @@ function FollowList() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setUser1(data);
+        setUpdatedUserInfo(data);
       });
+
+    getcurrentuser();
   }, []);
 
   const addFollow = async (userid) => {
@@ -25,23 +74,28 @@ function FollowList() {
       usertofollow: userid,
     };
     console.log(JSON.stringify(user));
-    const res = await fetch("http://localhost:8000/user/addfollow", {
+    await fetch("http://localhost:8000/user/addfollow", {
       method: "PUT",
       body: JSON.stringify(user),
       credentials: "include",
       headers: { "Content-Type": "application/json" },
     });
-    console.log(res);
-    if (res.ok) {
-      console.log("User created Successfully");
-      localStorage.setItem("isAuthenticated", JSON.stringify(true));
-      navigate("/dashboard");
-    }
+
+    const response = await fetch(`http://localhost:8000/user/getalluser`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const updatedData = await response.json();
+    setUpdatedUserInfo(updatedData);
   };
+
   return (
     <>
       <div className="user-follow-container">
-        {user1.map((usertofollow) => (
+        {updatedUserInfo.map((usertofollow) => (
           <div className="user-follow-box">
             <div className="user-follow-box-img">
               {usertofollow.personalDetails.map((usertofollowpersonal) => (
@@ -49,11 +103,21 @@ function FollowList() {
               ))}
             </div>
             <div className="user-follow-box-text">
-              <h5>{usertofollow.username}</h5>
-              <p>{usertofollow.fullName}</p>
-              <button onClick={() => addFollow(usertofollow._id)}>
-                Follow
-              </button>
+              <NavLink to={`/user/${usertofollow._id}`}>
+                <h5>{usertofollow.username}</h5>
+                <p>{usertofollow.fullName}</p>
+              </NavLink>
+              {usertofollow.followers.some(
+                (useaddfollow) => useaddfollow.user === currentUser
+              ) ? (
+                <button onClick={() => addUnFollow(usertofollow._id)}>
+                  Unfollow
+                </button>
+              ) : (
+                <button onClick={() => addFollow(usertofollow._id)}>
+                  Follow
+                </button>
+              )}
             </div>
           </div>
         ))}

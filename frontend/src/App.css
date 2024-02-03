@@ -1,5 +1,10 @@
+* {
+  margin: 0;
+  padding: 0;
 
-button{
+}
+
+button {
   padding: 10px 20px;
   color: white;
   background-color: #DE3163;
@@ -8,8 +13,10 @@ button{
   width: 100%;
   margin-top: 20px;
   cursor: pointer;
-} 
-input,textarea{
+}
+
+input,
+textarea {
   padding: 10px 0px 10px 10px;
 
   background-color: #2e2d2d;

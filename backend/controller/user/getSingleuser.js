@@ -11,9 +11,9 @@ const getSingleUser = async (req, res) => {
 
   //   const loggedInUserId = verifiedUser.id;
   const userId = req.params.id;
-  console.log(userId);
+  // console.log(userId);
   try {
-    const user = await User.findById(userId)
+    const user = await User.find({ _id: userId })
       .populate("post")
       .populate("followings.user")
       .populate("followers.user");

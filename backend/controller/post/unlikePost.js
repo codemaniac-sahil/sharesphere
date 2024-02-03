@@ -1,4 +1,5 @@
 const Post = require("../../database/model/post");
+const jwt = require("jsonwebtoken");
 const unlikePost = async (req, res) => {
   try {
     const token = req.cookies.token;

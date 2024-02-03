@@ -26,18 +26,18 @@ const removeFollow = async (req, res) => {
       return;
     }
 
-    const isFollowing = user.following.some(
+    const isFollowing = user.followings.some(
       (follow) => follow.user.toString() === user2._id.toString()
     );
 
     if (isFollowing) {
       // Remove user2 from user's following list
-      user.following = user.following.filter(
+      user.followings = user.followings.filter(
         (follow) => follow.user.toString() !== user2._id.toString()
       );
 
       // Remove user from user2's followed list
-      user2.followed = user2.followed.filter(
+      user2.followers = user2.followers.filter(
         (follow) => follow.user.toString() !== user._id.toString()
       );
 
@@ -47,6 +47,7 @@ const removeFollow = async (req, res) => {
       res.status(200).json({ message: `You unfollowed ${user2.username}` });
     } else {
       res.status(404).json({ message: "You are not following this user" });
+      console;
     }
   } catch (error) {
     res.status(500).json({ message: "An error occurred" });

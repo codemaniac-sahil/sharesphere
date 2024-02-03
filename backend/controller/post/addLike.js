@@ -12,7 +12,7 @@ const likePost = async (req, res) => {
 
     const userId = verifiedUser.id;
     const post = await Post.findById(req.params.id);
-    console.log(userId);
+    // console.log(userId);
     // Check if the post has already been liked
     if (
       post.likes.filter((like) => like.user.toString() === userId).length > 0

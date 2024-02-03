@@ -22,7 +22,7 @@ router.post("/addreply/:id/:commentid", addReply);
 router.post("/:id/addlike", likePost);
 
 router.put("/:id/:commentId/deletecomment", deleteComment);
-router.put("/:id/unlike", unlikePost);
+router.post("/:id/unlike", unlikePost);
 
 router.get("/:id/getcomments", getComments);
 router.delete("/:id/deletepost", deletePost);

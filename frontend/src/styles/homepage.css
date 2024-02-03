@@ -4,6 +4,7 @@
     height: auto;
     justify-content: center;
     align-items: center;
+
     /* background-color: black; */
 }
 
@@ -15,5 +16,8 @@
 }
 
 .login-page-ctx-ctx {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
     width: 100%;
 }

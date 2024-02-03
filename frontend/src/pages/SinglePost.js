@@ -8,28 +8,43 @@ import axios from "axios";
 function SinglePost() {
   const [replyText, setReplyText] = useState("");
   const [commentid, setCommentid] = useState("");
-  const [post, setPost] = useState([]);
+
   const [comment, setComment] = useState("");
   const [updatedUserInfo, setUpdatedUserInfo] = useState([]);
   const { id } = useParams();
   const [replyactivate, setReplyactivate] = useState(false);
-  const [likeActive, setLikeActive] = useState(false);
+
   const [commentActive, setCommentActive] = useState(false);
+  const [currentUser, setCurrentUser] = useState("");
+
   const handlereply = (commentID) => {
     setReplyactivate(!replyactivate);
     setCommentid(commentID);
-    console.log(commentid);
+    // console.log(commentid);
   };
-
+  const getcurrentuser = async () => {
+    const res = await fetch("http://localhost:8000/getcurrentuser", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const result = await res.json();
+    setCurrentUser(result);
+  };
   const handleLike = async (postId) => {
     console.log(postId);
-    // console.log(commentid);
-    await axios.post(
-      `http://localhost:8000/post/${postId}/addlike`,
 
-      { withCredentials: true }
-    );
-
+    const res = await fetch(`http://localhost:8000/post/${postId}/addlike`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const result = await res.json();
+    console.log(result);
     const response = await fetch(
       `http://localhost:8000/post/getsinglepost/${id}`,
       {
@@ -44,18 +59,43 @@ function SinglePost() {
     const updatedData = await response.json();
 
     // Update the state with the new comments
-    setPost(updatedData);
+
     setUpdatedUserInfo(updatedData);
-    // setReplyText("");
-    setLikeActive(!likeActive);
   };
 
+  const handleUnLike = async (postId) => {
+    console.log(postId);
+
+    const res = await fetch(`http://localhost:8000/post/${postId}/unlike`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const result = await res.json();
+    console.log(result);
+    const response = await fetch(
+      `http://localhost:8000/post/getsinglepost/${id}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const updatedData = await response.json();
+
+    // Update the state with the new comments
+
+    setUpdatedUserInfo(updatedData);
+  };
   const handleActiveComment = () => {
     setCommentActive(!commentActive);
   };
   const addreply = async (postId) => {
-    // console.log(postId);
-    // console.log(commentid);
     await axios.post(
       `http://localhost:8000/post/addreply/${postId}/${commentid}`,
       {
@@ -78,7 +118,7 @@ function SinglePost() {
     const updatedData = await response.json();
 
     // Update the state with the new comments
-    setPost(updatedData);
+
     setUpdatedUserInfo(updatedData);
     setReplyText("");
   };
@@ -109,7 +149,7 @@ function SinglePost() {
       const updatedData = await response.json();
 
       // Update the state with the new comments
-      setPost(updatedData);
+
       setUpdatedUserInfo(updatedData);
       setComment("");
     } catch (error) {
@@ -128,11 +168,11 @@ function SinglePost() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setPost(data);
         setUpdatedUserInfo(data);
       });
   }, [id]);
-  console.log(post);
+  getcurrentuser();
+
   return (
     <>
       <NavbarAll />
@@ -165,7 +205,26 @@ function SinglePost() {
                 </div>
                 <div className="post-like-comment">
                   <div className="single-post-like">
-                    {likeActive === false ? (
+                    {singlepost.likes.some(
+                      (liked) => liked.user._id === currentUser
+                    ) ? (
+                      <>
+                        <FaHeart
+                          fill="red"
+                          onClick={() => handleUnLike(singlepost._id)}
+                        />
+                        {singlepost.likes.length}
+                      </>
+                    ) : (
+                      <>
+                        <FaRegHeart
+                          onClick={() => handleLike(singlepost._id)}
+                        />
+                        {singlepost.likes.length}
+                      </>
+                    )}
+
+                    {/* {likeActive === false ? (
                       // <FaRegHeart />
                       <>
                         <FaRegHeart
@@ -178,9 +237,9 @@ function SinglePost() {
                         <FaHeart fill="red" onClick={handleLike} />
                         {singlepost.likes.length}
                       </>
-                    )}
+                    )} */}
                   </div>
-                  <div className="post-comment">
+                  <div className="post-comment" onClick={handleActiveComment}>
                     <FaRegComment onClick={handleActiveComment} />
                     {singlepost.comments.length}
                   </div>

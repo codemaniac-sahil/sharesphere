@@ -11,11 +11,69 @@ function Dashboard() {
   const [userinfo, setUserInfo] = useState([]);
   const [comment, setComment] = useState("");
   const [updatedUserInfo, setUpdatedUserInfo] = useState([]);
-  const [likeActive, setLikeActive] = useState(false);
-  const handleLike = () => {
-    setLikeActive(!likeActive);
+
+  const [currentUser, setCurrentUser] = useState("");
+  const handleLike = async (postId) => {
+    console.log(postId);
+    // console.log(commentid);
+    await fetch(`http://localhost:8000/post/${postId}/addlike`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    const response = await fetch(`http://localhost:8000/post/getallpost`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const updatedData = await response.json();
+
+    // Update the state with the new comments
+
+    setUpdatedUserInfo(updatedData);
   };
   console.log(userinfo);
+  const handleUnLike = async (postId) => {
+    await fetch(`http://localhost:8000/post/${postId}/unlike`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    const response = await fetch(`http://localhost:8000/post/getallpost`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const updatedData = await response.json();
+
+    // Update the state with the new comments
+
+    setUpdatedUserInfo(updatedData);
+  };
+
+  const getcurrentuser = async () => {
+    const res = await fetch("http://localhost:8000/getcurrentuser", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const result = await res.json();
+    setCurrentUser(result);
+  };
   const addComment = async (postId) => {
     try {
       // Make the API call to add the comment
@@ -62,6 +120,7 @@ function Dashboard() {
         setUpdatedUserInfo(data);
       });
   }, []);
+  getcurrentuser();
   return (
     <>
       <NavbarAll />
@@ -91,11 +150,21 @@ function Dashboard() {
                   </div>
                 </div>
                 <div className="post-like">
-                  {likeActive === false ? (
-                    // <FaRegHeart />
-                    <FaRegHeart onClick={handleLike} />
+                  {user.likes.some(
+                    (liked) => liked.user._id === currentUser
+                  ) ? (
+                    <>
+                      <FaHeart
+                        fill="red"
+                        onClick={() => handleUnLike(user._id)}
+                      />
+                      {user.likes.length}
+                    </>
                   ) : (
-                    <FaHeart fill="red" onClick={handleLike} />
+                    <>
+                      <FaRegHeart onClick={() => handleLike(user._id)} />
+                      {user.likes.length}
+                    </>
                   )}
                 </div>
 
