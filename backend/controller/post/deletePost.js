@@ -23,9 +23,10 @@ const deletePost = async (req, res) => {
     const post = await Post.findById(req.params.id);
     console.log(userId);
     if (post.createdBy == userId) {
-      const postimage = post.post.split("/")[4];
+      const postimage = decodeURIComponent(post.post.split("/")[4]);
       console.log(postimage);
       const blockBlobClient = containerClient.getBlockBlobClient(postimage);
+      // console.log(blockBlobClient);
       await blockBlobClient.delete();
       console.log(`Blob "${postimage}" deleted successfully.`);
       await Post.deleteOne({ _id: req.params.id });
@@ -36,10 +37,9 @@ const deletePost = async (req, res) => {
       await post.save();
       await user.save();
     }
-
-    console.log(post.createdBy == userId);
   } catch (err) {
-    res.status(501).json({ "server error": err });
+    res.status(501).json(err);
+    // console.log(err);
   }
 };
 module.exports = deletePost;

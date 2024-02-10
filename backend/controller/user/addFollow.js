@@ -6,19 +6,19 @@ const addFollow = async (req, res) => {
     const token = req.cookies.token;
 
     const verifiedUser = jwt.verify(token, process.env.TOKEN_KEY);
-    console.log(verifiedUser);
+
     const userId = verifiedUser.id;
-    console.log(userId);
+
     const user = await User.findById(userId);
 
     const userToFollow = req.body.usertofollow;
-    console.log(userToFollow);
+
     if (!userToFollow) {
       return res.status(400).json({ message: "Invalid user ID" });
     }
 
     const user2 = await User.findById(userToFollow);
-    console.log(user2);
+
     if (!user2) {
       return res.status(400).json({ message: "User not found" });
     }

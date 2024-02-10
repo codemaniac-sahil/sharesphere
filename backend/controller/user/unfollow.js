@@ -16,14 +16,12 @@ const removeFollow = async (req, res) => {
 
     if (!userToUnfollow) {
       res.status(400).json({ message: "Invalid user ID" });
-      return;
     }
 
     const user2 = await User.findById(userToUnfollow);
 
     if (!user2) {
       res.status(400).json({ message: "User not found" });
-      return;
     }
 
     const isFollowing = user.followings.some(

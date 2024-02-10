@@ -16,12 +16,11 @@ const addComment = async (req, res) => {
       user: userId,
       comment: req.body.comment,
     };
-    console.log(post);
+
     post.comments.unshift(newComment);
     await post.save();
     res.json(post.comments);
   } catch (err) {
-    console.error(err.message);
     res.status(500).send("Server Error");
   }
 };

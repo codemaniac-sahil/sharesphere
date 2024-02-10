@@ -5,6 +5,8 @@ import "../styles/dashboard.css";
 import FollowList from "../components/FollowList";
 import { NavLink } from "react-router-dom";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+
 import axios from "axios";
 
 function Dashboard() {
@@ -13,6 +15,29 @@ function Dashboard() {
   const [updatedUserInfo, setUpdatedUserInfo] = useState([]);
 
   const [currentUser, setCurrentUser] = useState("");
+  const handleDeletePost = async (postId) => {
+    await fetch(`http://localhost:8000/post/${postId}/deletepost`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const response = await fetch(`http://localhost:8000/post/getallpost`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const updatedData = await response.json();
+
+    // Update the state with the new comments
+
+    setUpdatedUserInfo(updatedData);
+  };
+
   const handleLike = async (postId) => {
     console.log(postId);
     // console.log(commentid);
@@ -73,6 +98,7 @@ function Dashboard() {
     });
     const result = await res.json();
     setCurrentUser(result);
+    localStorage.setItem("currentUser", currentUser);
   };
   const addComment = async (postId) => {
     try {
@@ -131,17 +157,29 @@ function Dashboard() {
             <div key={user.postId} className="userinfo">
               <div className="userinfo-post">
                 <div className="userinfo-post-user">
-                  <div className="userinfo-post-user-img">
-                    {user.createdBy.personalDetails.map((profilepic) => (
-                      <>
-                        <img src={profilepic.profilePic} alt="profilepic" />
-                      </>
-                    ))}
+                  <div className="user-info-post-user-left">
+                    <div className="userinfo-post-user-img">
+                      {user.createdBy.personalDetails.map((profilepic) => (
+                        <>
+                          <img src={profilepic.profilePic} alt="profilepic" />
+                        </>
+                      ))}
+                    </div>
+                    <div className="userinfo-post-user-username">
+                      <NavLink to={`/user/${user.createdBy._id}`}>
+                        <p>{user.createdBy.username}</p>
+                      </NavLink>
+                    </div>
                   </div>
-                  <div className="userinfo-post-user-username">
-                    <NavLink to={`/user/${user.createdBy._id}`}>
-                      <p>{user.createdBy.username}</p>
-                    </NavLink>
+                  <div className="user-info-post-user-right">
+                    {currentUser === user.createdBy._id ? (
+                      <MdDelete
+                        fill="white"
+                        onClick={() => handleDeletePost(user._id)}
+                      />
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
                 <div className="userinfo-post-post">

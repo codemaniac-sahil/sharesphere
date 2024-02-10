@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import NavbarAll from "../components/NavbarAll";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import "../styles/singlepost.css";
 import { FaHeart, FaRegComment, FaRegHeart } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 import axios from "axios";
 function SinglePost() {
+  const navigate = useNavigate();
   const [replyText, setReplyText] = useState("");
   const [commentid, setCommentid] = useState("");
 
@@ -16,6 +18,17 @@ function SinglePost() {
 
   const [commentActive, setCommentActive] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
+
+  const handleDeletePost = async (postId) => {
+    await fetch(`http://localhost:8000/post/${postId}/deletepost`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    navigate("/dashboard");
+  };
 
   const handlereply = (commentID) => {
     setReplyactivate(!replyactivate);
@@ -198,6 +211,16 @@ function SinglePost() {
                     <NavLink to={`/user/${singlepost.createdBy._id}`}>
                       <p>{singlepost.createdBy.username}</p>
                     </NavLink>
+                  </div>
+                  <div className="post-delete">
+                    {currentUser === singlepost.createdBy._id ? (
+                      <MdDelete
+                        fill="white"
+                        onClick={() => handleDeletePost(singlepost._id)}
+                      />
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
                 <div className="post-content-image">

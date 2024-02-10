@@ -27,8 +27,7 @@ const addReply = async (req, res) => {
       user: userId,
       replyText: req.body.replytext,
     };
-    //   console.log(reply);
-    //   console.log(comment);
+
     comment.reply.unshift(reply);
     await post.save();
     res.json(comment);

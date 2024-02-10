@@ -41,7 +41,6 @@ const addPost = async (req, res) => {
     user.save();
     res.status(200).json({ post: post, user: user });
   } catch (error) {
-    console.log(error);
     res.status(400).json({ message: "Blog did not created" });
   }
 };

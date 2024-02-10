@@ -17,7 +17,7 @@ const addPersonalDetails = async (req, res) => {
       return res.json({ status: false });
     }
     const verifiedUser = jwt.verify(token, process.env.TOKEN_KEY);
-    console.log(verifiedUser);
+
     const userId = verifiedUser.id;
     const user = await User.findById(userId);
     const blobName = `${Date.now()}-${req.file.originalname}`;
@@ -32,7 +32,7 @@ const addPersonalDetails = async (req, res) => {
     };
     user.personalDetails.push(personaldetails);
     await user.save();
-    console.log(user);
+
     res.status(201).json({ message: "Added successfully" });
   } catch (error) {
     res.status(404).json({ message: error });

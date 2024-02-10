@@ -1,60 +1,3 @@
-// const Post = require("../../database/model/post");
-
-// const getAllpost = async (req, res) => {
-//   try {
-//     const posts = await Post.find({})
-//       .populate(["likes.user", "comments.user", "comments.reply.user"])
-//       .populate({
-//         path: "createdBy",
-//         select: {
-//           _id: 0,
-//           post: 0,
-//           email: 0,
-//           password: 0,
-//           createdAt: 0,
-//           updatedAt: 0,
-//         },
-//       })
-//       .populate({
-//         path: "likes.user",
-//         select: {
-//           post: 0,
-//           email: 0,
-//           password: 0,
-//           createdAt: 0,
-//           updatedAt: 0,
-//         },
-//       })
-//       .populate({
-//         path: "comments.user",
-//         select: {
-//           post: 0,
-//           email: 0,
-//           password: 0,
-//           createdAt: 0,
-//           updatedAt: 0,
-//         },
-//       })
-//       .populate({
-//         path: "comments.reply.user",
-//         select: {
-//           post: 0,
-//           email: 0,
-//           password: 0,
-//           createdAt: 0,
-//           updatedAt: 0,
-//         },
-//       })
-//       .sort({ createdAt: -1 });
-
-//     res.status(200).json(posts);
-//   } catch (error) {
-//     res.status(404).json({ message: error.message });
-//     console.log(error.message);
-//   }
-// };
-// module.exports = getAllpost;
-
 const User = require("../../database/model/user");
 const Post = require("../../database/model/post");
 const jwt = require("jsonwebtoken");
@@ -85,14 +28,13 @@ const getAllpost = async (req, res) => {
     const userpost = user.post;
     // console.log(userpost);
     followedPosts.push(...user.post);
-    // console.log(followedPosts);
+
     // Fetch the actual posts from the Post model
     const posts = await Post.find({ _id: { $in: followedPosts } })
 
       .populate({
         path: "createdBy",
         select: {
-          // _id: 0,
           post: 0,
           email: 0,
           password: 0,

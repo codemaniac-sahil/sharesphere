@@ -12,7 +12,7 @@ const likePost = async (req, res) => {
 
     const userId = verifiedUser.id;
     const post = await Post.findById(req.params.id);
-    // console.log(userId);
+
     // Check if the post has already been liked
     if (
       post.likes.filter((like) => like.user.toString() === userId).length > 0
@@ -24,8 +24,7 @@ const likePost = async (req, res) => {
     await post.save();
     res.json(post.likes);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).json("Server Error");
   }
 };
 module.exports = likePost;

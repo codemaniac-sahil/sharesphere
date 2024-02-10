@@ -23,18 +23,10 @@ const signup = async (req, res) => {
       email: req.body.email,
       password: hashedPassword,
     });
-    // console.log(newUser);
+
     const user = await newUser.save();
     const token = createSecretToken(user._id);
 
-    // res.cookie("token", token, {
-    //   domain: "bloogle-vista.azurewebsites", // Set your domain here
-    //   path: "/", // Cookie is accessible from all paths
-    //   expires: new Date(Date.now() + 86400000), // Cookie expires in 1 day
-    //   secure: true, // Cookie will only be sent over HTTPS
-    //   httpOnly: true, // Cookie cannot be accessed via client-side scripts
-    //   sameSite: "None",
-    // });
     res.cookie("token", token, {
       domain: process.env.FRONTENT_DOMAIN,
       path: "/",
